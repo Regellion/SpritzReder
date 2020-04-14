@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="GUI.InputPanel">
+  <grid id="27dc6" binding="mainInputPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="500" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="empty">
+      <size top="20" left="20" bottom="0" right="20"/>
+    </border>
+    <children>
+      <grid id="bb332" binding="infoPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="North"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="371f1" class="javax.swing.JLabel" binding="infoText">
+            <constraints border-constraint="Center"/>
+            <properties>
+              <font name="Times New Roman" size="22" style="1"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <text value="text"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="7f205" binding="inputInputPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="empty">
+          <size top="10" left="0" bottom="0" right="0"/>
+        </border>
+        <children>
+          <component id="114d8" class="javax.swing.JLabel" binding="inputText">
+            <constraints border-constraint="North"/>
+            <properties>
+              <font name="Times New Roman" size="18" style="0"/>
+              <horizontalAlignment value="2"/>
+              <horizontalTextPosition value="11"/>
+              <text value="inputText"/>
+            </properties>
+          </component>
+          <grid id="dfa2b" binding="selectionPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="Center"/>
+            <properties/>
+            <border type="empty">
+              <size top="10" left="0" bottom="0" right="0"/>
+            </border>
+            <children>
+              <component id="442a8" class="javax.swing.JTextField" binding="urlText">
+                <constraints border-constraint="First"/>
+                <properties>
+                  <columns value="50"/>
+                  <font size="16"/>
+                  <horizontalAlignment value="2"/>
+                  <text value=""/>
+                  <toolTipText value="Поле для ввода адреса сайта"/>
+                </properties>
+              </component>
+              <grid id="9c968" binding="buttonFileSelect" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints border-constraint="East"/>
+                <properties/>
+                <border type="empty">
+                  <size top="0" left="0" bottom="0" right="0"/>
+                </border>
+                <children>
+                  <component id="87602" class="javax.swing.JButton" binding="fileSelectButton">
+                    <constraints border-constraint="North"/>
+                    <properties>
+                      <autoscrolls value="false"/>
+                      <focusCycleRoot value="false"/>
+                      <horizontalAlignment value="0"/>
+                      <horizontalTextPosition value="11"/>
+                      <text value="Button"/>
+                      <toolTipText value="Кнопка выобра файла"/>
+                    </properties>
+                  </component>
+                  <component id="f5906" class="javax.swing.JButton" binding="stringButton">
+                    <constraints border-constraint="South"/>
+                    <properties>
+                      <text value="Button"/>
+                      <toolTipText value="Кнопка ввода текста из поля"/>
+                      <visible value="true"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="85149" binding="stringPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+                <constraints border-constraint="Center"/>
+                <properties/>
+                <border type="empty">
+                  <size top="10" left="0" bottom="0" right="5"/>
+                </border>
+                <children>
+                  <component id="ac16f" class="javax.swing.JLabel" binding="infoTextStringPanel">
+                    <constraints border-constraint="North"/>
+                    <properties>
+                      <font name="Times New Roman" size="18" style="0"/>
+                      <text value="infoStringText"/>
+                    </properties>
+                  </component>
+                  <scrollpane id="20f02">
+                    <constraints border-constraint="Center"/>
+                    <properties>
+                      <inheritsPopupMenu value="false"/>
+                    </properties>
+                    <border type="empty">
+                      <size top="0" left="0" bottom="0" right="5"/>
+                    </border>
+                    <children>
+                      <component id="54ff7" class="javax.swing.JTextArea" binding="stringText">
+                        <constraints/>
+                        <properties>
+                          <maximumSize width="32767" height="32767"/>
+                          <text value=""/>
+                          <toolTipText value="Поле для ввода Вашего текста"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </scrollpane>
+                </children>
+              </grid>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="5759f" binding="buttonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="26bfa" class="javax.swing.JButton" binding="returnButton">
+            <constraints/>
+            <properties>
+              <label value="Return"/>
+              <text value="Return"/>
+              <toolTipText value="Вернуться в предидущее меню"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

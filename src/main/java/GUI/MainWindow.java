@@ -6,18 +6,21 @@ import java.awt.event.ActionEvent;
 
 
 public class MainWindow extends JFrame {
-
+    // Создаем панели
     private WelcomePanel welcomePanel = new WelcomePanel();
+    private InputPanel inputPanel = new InputPanel();
+
     private static final int width = 800;
     private static final int height = 600;
 
     public MainWindow(){
         // Заголовок программы
         //TODO придумать норм название
-        super("Name_NAME");
+        super("Speed Reader");
         // добавляем кнопки
         JButton buttonRSVP = welcomePanel.getRSVPButton();
         JButton buttonSpritz = welcomePanel.getSpritzButton();
+        JButton buttonReturn = inputPanel.getReturnButton();
 
 
         // Операция по закрытию
@@ -36,6 +39,7 @@ public class MainWindow extends JFrame {
 
         buttonRSVP.addActionListener(this::buttonClick);
         buttonSpritz.addActionListener(this::buttonClick);
+        buttonReturn.addActionListener(this::buttonClick);
     }
 
     // Мульти слушатель кнопок
@@ -45,22 +49,26 @@ public class MainWindow extends JFrame {
 
         // Если нажата кнопка метода RSVP
         if(e.getSource().equals(welcomePanel.getRSVPButton())) {
-            windowSwitcher(welcomePanel);
-            // Задаем значение булиан переменной метода
+            inputPanel.printWelcomeText("\"RSVP\"");
+            windowSwitcher(inputPanel);
+
 
             // Если нажата кнопка метода спритз
         } else if(e.getSource().equals(welcomePanel.getSpritzButton())){
-            windowSwitcher(welcomePanel);
+            inputPanel.printWelcomeText("\"Spritz\"");
+            windowSwitcher(inputPanel);
+
 
 
 
             // Если во втором окне нажата кнопка возврата
-        } /*else if(e.getSource().equals(secondForm.getReturnButton())){
+        } else if(e.getSource().equals(inputPanel.getReturnButton())){
             // Не используется метод windowSwitcher потому что неправильно кладет размеры на форму
-            this.setContentPane(mainForm.getPanel());
-        }*/
+            this.setContentPane(welcomePanel.getPanel());
+        }
         this.repaint();
     }
+
 
     // Метод переключения окон
     private void windowSwitcher(FormPanel formName){
@@ -69,7 +77,9 @@ public class MainWindow extends JFrame {
         // Выстраиваем по местам
         pack();
         // указываем размер
-        //TODO сделать не во все окно!!
-        this.setExtendedState(MAXIMIZED_BOTH);
+        //TODO сделать не во все окно!! мб можно удалить пак и эту строку
+        //this.setExtendedState(MAXIMIZED_BOTH);
+        this.setSize(new Dimension(800, 600));
     }
+
 }

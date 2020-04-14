@@ -15,7 +15,7 @@ import java.util.Comparator;
 
 public class ArrayCreator {
     //TODO сделать так чтобы значение задавалось через формы
-    private boolean isSpritz = true;
+    private boolean isSpritz;
     // Средняя длина русского слова(7) + 7(на всякий случай), оптимальная длинна слова до 14 символов(чтобы быстро читать)
     private static final int MAX_WORD_LENGTH = 13;
     private ArrayList<String> arrayList;
