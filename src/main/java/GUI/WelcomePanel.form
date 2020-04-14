@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="GUI.WelcomePanel">
+  <grid id="27dc6" binding="mainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="500" height="410"/>
+    </constraints>
+    <properties>
+      <font/>
+    </properties>
+    <border type="empty">
+      <size top="20" left="20" bottom="0" right="20"/>
+    </border>
+    <children>
+      <grid id="efc1e" binding="welcomeTextPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="North"/>
+        <properties/>
+        <border type="empty">
+          <size top="0" left="0" bottom="20" right="0"/>
+        </border>
+        <children>
+          <component id="d9aad" class="javax.swing.JLabel" binding="welcomeText">
+            <constraints border-constraint="North"/>
+            <properties>
+              <font name="Times New Roman" size="28" style="3"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <text value="Welcome Text"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="d6d3" binding="mainTextPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="821fa" class="javax.swing.JLabel" binding="mainText">
+            <constraints border-constraint="North"/>
+            <properties>
+              <font name="Times New Roman" size="20" style="0"/>
+              <horizontalAlignment value="2"/>
+              <horizontalTextPosition value="2"/>
+              <text value="Main Text"/>
+            </properties>
+          </component>
+          <component id="d6729" class="javax.swing.JLabel" binding="RSVPImg">
+            <constraints border-constraint="West"/>
+            <properties>
+              <alignmentY value="0.0"/>
+              <font name="Times New Roman" size="18" style="0"/>
+              <horizontalAlignment value="4"/>
+              <horizontalTextPosition value="4"/>
+              <text value="Метод RSVP"/>
+              <verticalAlignment value="0"/>
+              <verticalTextPosition value="1"/>
+            </properties>
+          </component>
+          <component id="d794c" class="javax.swing.JLabel" binding="spritzImg">
+            <constraints border-constraint="East"/>
+            <properties>
+              <font name="Times New Roman" size="18" style="0"/>
+              <horizontalAlignment value="2"/>
+              <horizontalTextPosition value="2"/>
+              <text value="Метод Spritz"/>
+              <verticalAlignment value="0"/>
+              <verticalTextPosition value="1"/>
+            </properties>
+          </component>
+          <grid id="318b6" binding="buttonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+            <constraints border-constraint="South"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="99327" class="javax.swing.JButton" binding="RSVPButton">
+                <constraints/>
+                <properties>
+                  <hideActionText value="false"/>
+                  <horizontalAlignment value="0"/>
+                  <preferredSize width="200" height="35"/>
+                  <selected value="false"/>
+                  <text value="Читать по методу RSVP"/>
+                  <verifyInputWhenFocusTarget value="true"/>
+                  <verticalAlignment value="0"/>
+                </properties>
+                <clientProperties>
+                  <hideActionText class="java.lang.Boolean" value="false"/>
+                </clientProperties>
+              </component>
+              <component id="76b05" class="javax.swing.JButton" binding="spritzButton">
+                <constraints/>
+                <properties>
+                  <preferredSize width="200" height="35"/>
+                  <text value="Читать по методу SPRITZ"/>
+                  <verifyInputWhenFocusTarget value="true"/>
+                </properties>
+                <clientProperties>
+                  <hideActionText class="java.lang.Boolean" value="false"/>
+                </clientProperties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>
