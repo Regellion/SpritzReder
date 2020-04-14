@@ -51,6 +51,7 @@
               <horizontalAlignment value="4"/>
               <horizontalTextPosition value="4"/>
               <text value="Метод RSVP"/>
+              <toolTipText value="Иллюстрация выравнивания слов по методу RSVP"/>
               <verticalAlignment value="0"/>
               <verticalTextPosition value="1"/>
             </properties>
@@ -62,6 +63,7 @@
               <horizontalAlignment value="2"/>
               <horizontalTextPosition value="2"/>
               <text value="Метод Spritz"/>
+              <toolTipText value="Иллюстрация выравнивания слов по методу Spritz"/>
               <verticalAlignment value="0"/>
               <verticalTextPosition value="1"/>
             </properties>
