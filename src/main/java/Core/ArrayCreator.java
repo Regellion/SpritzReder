@@ -23,7 +23,7 @@ public class ArrayCreator {
     private static final String SPACE_REGEX = "\\s";
     private static final String HYPHEN_WORD_REGEX = ".+-.+";
     // определение формата парсинга файлов
-    private static final String HTTP_FORMAT_REGEX = "^http.+";
+    private static final String HTTP_FORMAT_REGEX = "http";
     private static final String TXT = "text/plain";
     private static final String DOC = "application/msword";
     private static final String DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
@@ -137,7 +137,7 @@ public class ArrayCreator {
         //TODO проверять слушателя на путь к файлу
         Tika tika = new Tika();
         String media = tika.detect(filePath);
-        if(!filePath.matches(HTTP_FORMAT_REGEX)) {
+        if(!filePath.startsWith(HTTP_FORMAT_REGEX)) {
             if (media.equals(PDF) || media.equals(RTF)
                     || media.equals(TXT) || media.equals(DOC)
                     || media.equals(ODT) || media.equals(FB2)
