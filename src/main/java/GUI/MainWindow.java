@@ -1,5 +1,7 @@
 package GUI;
 
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,6 +9,7 @@ import java.awt.event.ActionEvent;
 
 public class MainWindow extends JFrame {
     // Создаем панели
+    private FinishPanel finishPanel = new FinishPanel();
     private WelcomePanel welcomePanel = new WelcomePanel();
     private InputPanel inputPanel = new InputPanel();
 
@@ -15,13 +18,13 @@ public class MainWindow extends JFrame {
 
     public MainWindow(){
         // Заголовок программы
-        //TODO придумать норм название
         super("Speed Reader");
         // добавляем кнопки
-        JButton buttonRSVP = welcomePanel.getRSVPButton();
-        JButton buttonSpritz = welcomePanel.getSpritzButton();
+        JButton buttonNext = welcomePanel.getNextButton();
         JButton buttonReturn = inputPanel.getReturnButton();
-
+        JButton buttonRSVP = inputPanel.getRSVPButton();
+        JButton buttonSpritz = inputPanel.getSpritzButton();
+        JButton buttonStartMenu = finishPanel.getStartMenuButton();
 
         // Операция по закрытию
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -37,9 +40,12 @@ public class MainWindow extends JFrame {
         // Делаем фрейм видимым
         this.setVisible(true);
 
+
+        buttonNext.addActionListener(this::buttonClick);
+        buttonReturn.addActionListener(this::buttonClick);
         buttonRSVP.addActionListener(this::buttonClick);
         buttonSpritz.addActionListener(this::buttonClick);
-        buttonReturn.addActionListener(this::buttonClick);
+        buttonStartMenu.addActionListener(this::buttonClick);
     }
 
     // Мульти слушатель кнопок
@@ -47,25 +53,24 @@ public class MainWindow extends JFrame {
         // При нажатии на кнопку главного меню чистим ГУИ
         this.getContentPane().remove(welcomePanel.getPanel());
 
-        // Если нажата кнопка метода RSVP
-        if(e.getSource().equals(welcomePanel.getRSVPButton())) {
-            inputPanel.printWelcomeText("\"RSVP\"");
+            // Если нажата кнопка продолжить
+        if(e.getSource().equals(welcomePanel.getNextButton())){
             windowSwitcher(inputPanel);
-
-
-            // Если нажата кнопка метода спритз
-        } else if(e.getSource().equals(welcomePanel.getSpritzButton())){
-            inputPanel.printWelcomeText("\"Spritz\"");
-            windowSwitcher(inputPanel);
-
-
-
-
             // Если во втором окне нажата кнопка возврата
         } else if(e.getSource().equals(inputPanel.getReturnButton())){
             // Не используется метод windowSwitcher потому что неправильно кладет размеры на форму
-            this.setContentPane(welcomePanel.getPanel());
+            //this.setContentPane(welcomePanel.getPanel());
+            windowSwitcher(welcomePanel);
+        } else if(e.getSource().equals(inputPanel.getRSVPButton())){
+            // TODO тут брать аррэй из инпут панели и проверять на ноль, и если норм то уже открывать, если нет, выбивать окно!
+            windowSwitcher(finishPanel);
+        } else if(e.getSource().equals(inputPanel.getSpritzButton())){
+            // TODO тут брать аррэй из инпут панели и проверять на ноль, и если норм то уже открывать, если нет, выбивать окно!
+            windowSwitcher(finishPanel);
+        } else if(e.getSource().equals(finishPanel.getStartMenuButton())){
+            windowSwitcher(welcomePanel);
         }
+        // мб можно удалить
         this.repaint();
     }
 

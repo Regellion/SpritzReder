@@ -12,8 +12,7 @@ public class WelcomePanel extends FormPanel{
     private JLabel RSVPImg;
     private JLabel spritzImg;
     private JPanel buttonPanel;
-    private JButton RSVPButton;
-    private JButton spritzButton;
+    private JButton nextButton;
 
 
     private static final String TAB_HTML = "&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -37,12 +36,9 @@ public class WelcomePanel extends FormPanel{
         return mainPanel;
     }
 
-    public JButton getRSVPButton() {
-        return RSVPButton;
-    }
 
-    public JButton getSpritzButton() {
-        return spritzButton;
+    JButton getNextButton() {
+        return nextButton;
     }
 }
 

@@ -133,9 +133,24 @@
           <component id="26bfa" class="javax.swing.JButton" binding="returnButton">
             <constraints/>
             <properties>
+              <horizontalAlignment value="0"/>
               <label value="Return"/>
               <text value="Return"/>
               <toolTipText value="Вернуться в предидущее меню"/>
+            </properties>
+          </component>
+          <component id="712bb" class="javax.swing.JButton" binding="RSVPButton">
+            <constraints/>
+            <properties>
+              <text value="RSVP"/>
+              <toolTipText value="Кнопка чтения методом RSVP"/>
+            </properties>
+          </component>
+          <component id="6f7f0" class="javax.swing.JButton" binding="spritzButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <text value="Spritz"/>
+              <toolTipText value="Кнопка чтения методом Spritz"/>
             </properties>
           </component>
         </children>

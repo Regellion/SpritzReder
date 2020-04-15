@@ -1,15 +1,22 @@
 package GUI;
 
+import Core.ArrayCreator;
+import org.apache.tika.exception.TikaException;
+
 import javax.swing.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class InputPanel extends FormPanel{
+    private ArrayList<String> array;
     // Файл или url
     private static String urlOrFile;
     // Свой ввод текста
     private static String str;
+
 
     private JPanel mainInputPanel;
     private JPanel infoPanel;
@@ -26,24 +33,37 @@ public class InputPanel extends FormPanel{
     private JLabel infoTextStringPanel;
     private JTextArea stringText;
     private JButton stringButton;
+    private JButton RSVPButton;
+    private JButton spritzButton;
     // Использую HTML тэги для автопереноса строки
     private static final String START_STRING_HTML = "<html><div WIDTH=%d><center>";
     private static final String FINISH_STRING_HTML = "</center></div></html>";
 
     InputPanel(){
-        this.printWelcomeText("");
+        // Ввод инфо текста
+        infoText.setText(START_STRING_HTML + "Осталось всего несколько шагов и мы начинаем!" + FINISH_STRING_HTML);
+
         // Выводим краткую инструкцию
         inputText.setText("<html><div WIDTH=%d>Если вы хотите прочитать текст из файла или сайта, " +
-                "то введите в поле ниже адресс сайта или выберите файл нажав соответствующую кнопку:</div></html>");
+                "то введите в поле ниже адресс сайта или выберите файл нажав соответствующую кнопку" +
+                ", после того как вы введете информацию, нажмите кнопку Spritz или RSVP, для чтения " +
+                "соответствующим образом:</div></html>");
         // Выводим инструкцию для ввода строк
         infoTextStringPanel.setText("<html><div WIDTH=%d>Если вы желаете ввести свой текст, или часть " +
                 "скопированного текста, то введите его в поле ниже:</div></html>");
-        // Если в однострочное поле ввели текст и нажали enter
 
+        // Если в однострочное поле ввели текст и нажали enter
         urlText.addActionListener(e -> {
             urlOrFile = urlText.getText().trim();
             //TODO если активировано то надо на 3ю панель переходить
             System.out.println(urlOrFile);
+            // TODO сделать 1 метод на 3 кнопки
+            try {
+                array = ArrayCreator.autoParser(urlOrFile);
+            } catch (IOException | TikaException ex) {
+                ex.printStackTrace();
+            }
+
             urlText.setText("");
         });
         // Если выбран файл
@@ -58,6 +78,11 @@ public class InputPanel extends FormPanel{
                 urlOrFile = file.getAbsolutePath().trim();
                 //TODO если активировано то надо на 3ю панель переходить
                 System.out.println(urlOrFile);
+                try {
+                    array = ArrayCreator.autoParser(urlOrFile);
+                } catch (IOException | TikaException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
 
@@ -72,28 +97,58 @@ public class InputPanel extends FormPanel{
             str = stringText.getText().trim();
             //TODO если активировано то надо на 3ю панель переходить
             System.out.println(str);
+
+            // Вызываем метод парсинга строки
+            array = ArrayCreator.parserString(str);
             stringText.setText("");
-        });
-        returnButton.addActionListener(e -> {
 
         });
+
+        RSVPButton.addActionListener(e -> {
+            if(array != null) {
+                array = ArrayCreator.createRSVP(array);
+                // здесь передавать списки дальше
+                array.forEach(System.out::println);
+            } else {
+                //TODO потом сделать окно предупреждения
+                System.out.println("Вы оставили все поля пустыми!");
+            }
+
+        });
+
+        spritzButton.addActionListener(e -> {
+            if(array != null) {
+                array = ArrayCreator.createSpritz(array);
+                // здесь передавать списки дальше
+                array.forEach(System.out::println);
+            } else {
+                //TODO потом сделать окно предупреждения
+                System.out.println("Вы оставили все поля пустыми!");
+            }
+        });
+
+
     }
 
     public JPanel getPanel() {
         return mainInputPanel;
     }
 
-    public JButton getReturnButton() {
+    JButton getReturnButton() {
         return returnButton;
     }
 
-    private JLabel getInfoText() {
-        return this.infoText;
+    JButton getRSVPButton() {
+        return RSVPButton;
     }
 
-    public void printWelcomeText(String method){
-        // выводим строку которая показывает выбранный метод
-        getInfoText().setText(START_STRING_HTML + "Вы выбрали метод скорочтения "+ method +
-                ". Осталось всего несколько шагов и мы начинаем!" + FINISH_STRING_HTML);
+    JButton getSpritzButton() {
+        return spritzButton;
     }
+
+    public ArrayList<String> getArray() {
+        return array;
+    }
+
+
 }
