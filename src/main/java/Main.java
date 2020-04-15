@@ -13,14 +13,14 @@
 //////////////////////////////////////////////////////////////////////////
 
 
-import GUI.MainWindow;
-
+import Core.Loader;
 
 public class Main {
-
+    //TODO ошибка при большом листе
+    // попробовать избавиться от лодера
     public static void main(String[] args) {
         try {
-            new MainWindow();
+            new Loader();
         }
         catch (Exception e){
             e.printStackTrace();
