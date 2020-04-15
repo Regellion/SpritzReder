@@ -1,6 +1,7 @@
 package GUI;
 
 import Core.ArrayCreator;
+import Core.Loader;
 import org.apache.tika.exception.TikaException;
 
 import javax.swing.*;
@@ -108,7 +109,7 @@ public class InputPanel extends FormPanel{
             if(array != null) {
                 array = ArrayCreator.createRSVP(array);
                 // здесь передавать списки дальше
-                array.forEach(System.out::println);
+                Loader.getMainWindow().getShowPanel().setArray(array);
             } else {
                 //TODO потом сделать окно предупреждения
                 System.out.println("Вы оставили все поля пустыми!");
@@ -120,7 +121,7 @@ public class InputPanel extends FormPanel{
             if(array != null) {
                 array = ArrayCreator.createSpritz(array);
                 // здесь передавать списки дальше
-                array.forEach(System.out::println);
+                Loader.getMainWindow().getShowPanel().setArray(array);
             } else {
                 //TODO потом сделать окно предупреждения
                 System.out.println("Вы оставили все поля пустыми!");

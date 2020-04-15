@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 
 public class MainWindow extends JFrame {
     // Создаем панели
-    private FinishPanel finishPanel = new FinishPanel();
+    private ShowPanel showPanel = new ShowPanel();
     private WelcomePanel welcomePanel = new WelcomePanel();
     private InputPanel inputPanel = new InputPanel();
 
@@ -24,7 +24,7 @@ public class MainWindow extends JFrame {
         JButton buttonReturn = inputPanel.getReturnButton();
         JButton buttonRSVP = inputPanel.getRSVPButton();
         JButton buttonSpritz = inputPanel.getSpritzButton();
-        JButton buttonStartMenu = finishPanel.getStartMenuButton();
+        JButton buttonStartMenu = showPanel.getStartMenuButton();
 
         // Операция по закрытию
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -63,11 +63,11 @@ public class MainWindow extends JFrame {
             windowSwitcher(welcomePanel);
         } else if(e.getSource().equals(inputPanel.getRSVPButton())){
             // TODO тут брать аррэй из инпут панели и проверять на ноль, и если норм то уже открывать, если нет, выбивать окно!
-            windowSwitcher(finishPanel);
+            windowSwitcher(showPanel);
         } else if(e.getSource().equals(inputPanel.getSpritzButton())){
             // TODO тут брать аррэй из инпут панели и проверять на ноль, и если норм то уже открывать, если нет, выбивать окно!
-            windowSwitcher(finishPanel);
-        } else if(e.getSource().equals(finishPanel.getStartMenuButton())){
+            windowSwitcher(showPanel);
+        } else if(e.getSource().equals(showPanel.getStartMenuButton())){
             windowSwitcher(welcomePanel);
         }
         // мб можно удалить
@@ -87,4 +87,7 @@ public class MainWindow extends JFrame {
         this.setSize(new Dimension(800, 600));
     }
 
+    ShowPanel getShowPanel() {
+        return showPanel;
+    }
 }
