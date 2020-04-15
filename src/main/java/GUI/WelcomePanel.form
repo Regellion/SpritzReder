@@ -73,26 +73,12 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="99327" class="javax.swing.JButton" binding="RSVPButton">
-                <constraints/>
-                <properties>
-                  <hideActionText value="false"/>
-                  <horizontalAlignment value="0"/>
-                  <preferredSize width="200" height="35"/>
-                  <selected value="false"/>
-                  <text value="Читать по методу RSVP"/>
-                  <verifyInputWhenFocusTarget value="true"/>
-                  <verticalAlignment value="0"/>
-                </properties>
-                <clientProperties>
-                  <hideActionText class="java.lang.Boolean" value="false"/>
-                </clientProperties>
-              </component>
-              <component id="76b05" class="javax.swing.JButton" binding="spritzButton">
+              <component id="76b05" class="javax.swing.JButton" binding="nextButton">
                 <constraints/>
                 <properties>
                   <preferredSize width="200" height="35"/>
-                  <text value="Читать по методу SPRITZ"/>
+                  <text value="Далее"/>
+                  <toolTipText value="Нажмите эту кнопку чтобы продолжить"/>
                   <verifyInputWhenFocusTarget value="true"/>
                 </properties>
                 <clientProperties>

@@ -6,6 +6,7 @@ import org.apache.tika.Tika;
 import org.apache.tika.exception.TikaException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -14,8 +15,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class ArrayCreator {
-    //TODO сделать так чтобы значение задавалось через формы
-    private boolean isSpritz;
+
     // Средняя длина русского слова(7) + 7(на всякий случай), оптимальная длинна слова до 14 символов(чтобы быстро читать)
     private static final int MAX_WORD_LENGTH = 13;
     private ArrayList<String> arrayList;
@@ -35,17 +35,15 @@ public class ArrayCreator {
     private static final String EPUB = "application/epub+zip";
     private static final String HTML_FILE = "text/html";
 
+
     public ArrayCreator(String textOrFile) throws IOException, TikaException {
-        if(isSpritz) {
-            //TODO сдеать выбор зависящий от слушателя метода выбора
-            arrayList = createSpritz(ArrayCreator.autoParser(textOrFile));
-        } else {
-            arrayList = createRSVP(ArrayCreator.autoParser(textOrFile));
-        }
+
+            //arrayList = createRSVP(ArrayCreator.autoParser(textOrFile));
+
     }
 
     // Метод создания листа строк по методу Spritz
-    private static ArrayList<String> createSpritz(ArrayList<String> array){
+    public static ArrayList<String> createSpritz(ArrayList<String> array){
         if(array == null){
             return null;
         }
@@ -73,7 +71,7 @@ public class ArrayCreator {
     }
 
     // Метод создания листа строк по методу RSVP
-    private static ArrayList<String> createRSVP(ArrayList<String> array){
+    public static ArrayList<String> createRSVP(ArrayList<String> array){
         if(array == null){
             return null;
         }
@@ -131,10 +129,9 @@ public class ArrayCreator {
     }
 
     // Метод автопарсинга
-    private static ArrayList<String> autoParser(String filePath) throws IOException, TikaException {
-        ArrayList<String> arr;
+    public static ArrayList<String> autoParser(String filePath) throws IOException, TikaException {
+        ArrayList<String> arr = null;
 
-        //TODO проверять слушателя на путь к файлу
         Tika tika = new Tika();
         String media = tika.detect(filePath);
         if(!filePath.startsWith(HTTP_FORMAT_REGEX)) {
@@ -148,19 +145,10 @@ public class ArrayCreator {
                 arr = parserFileDOCX(filePath);
             } else {
                 System.out.println("Такой формат временно не поддерживается!");
-                arr = null;
             }
-        }else {
+        } else {
             arr = parserURL(filePath);
         }
-
-        //TODO проверять слушателя на ввод строки
-        if(media.equals(0)){
-            arr = parserString(filePath);
-        } else {
-            System.out.println("Это не строка!");
-        }
-
 
         return arr;
     }
@@ -265,23 +253,14 @@ public class ArrayCreator {
 
     // TODO доделать метод чтобы принимал строку с отступами
     // Метод обработки строки
-    private static ArrayList<String> parserString(String text){
-        String[] arr = text.split(SPACE_REGEX);
+    public static ArrayList<String> parserString(String text){
+        ArrayList<String> arr = getArrayList(new StringBuilder(text));
         if(text.length() == 0){
             System.out.println("Ваш текст не сожержит слов!");
         }
-        return new ArrayList<>(Arrays.asList(arr));
+        return arr;
     }
 
-    public ArrayList<String> getArrayList() {
-        return arrayList;
-    }
 
-    public boolean isSpritz() {
-        return isSpritz;
-    }
 
-    public void setSpritz(boolean spritz) {
-        isSpritz = spritz;
-    }
 }
