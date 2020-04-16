@@ -64,6 +64,7 @@ public class InputPanel extends FormPanel{
             } catch (IOException | TikaException ex) {
                 ex.printStackTrace();
             }
+            //TODO написать об успехе или неудачи ввода адреса сайта
 
             urlText.setText("");
         });
@@ -71,6 +72,7 @@ public class InputPanel extends FormPanel{
         fileSelectButton.setText("Выбрать файл");
         stringButton.setText("Ввести текст");
         returnButton.setText("Назад");
+        // Действие на кнопку выбора файла
         fileSelectButton.addActionListener(e -> {
             JFileChooser fileopen = new JFileChooser();
             int ret = fileopen.showDialog(null, "Открыть файл");
@@ -84,6 +86,7 @@ public class InputPanel extends FormPanel{
                 } catch (IOException | TikaException ex) {
                     ex.printStackTrace();
                 }
+                //TODO написать об успехе или неудачи выбора файла
             }
         });
 
@@ -93,7 +96,7 @@ public class InputPanel extends FormPanel{
         // Определяем перенос строк
         stringText.setLineWrap(true);
         stringText.setWrapStyleWord(true);
-        // Подключаем слушателя
+        // Подключаем слушателя на многострочное поле ввода текста
         stringButton.addActionListener(e -> {
             str = stringText.getText().trim();
             //TODO если активировано то надо на 3ю панель переходить
@@ -102,6 +105,7 @@ public class InputPanel extends FormPanel{
             // Вызываем метод парсинга строки
             array = ArrayCreator.parserString(str);
             stringText.setText("");
+            //TODO написать об успехе или неудачи выбора файла
 
         });
 
@@ -147,9 +151,9 @@ public class InputPanel extends FormPanel{
         return spritzButton;
     }
 
-    public ArrayList<String> getArray() {
+    /*public ArrayList<String> getArray() {
         return array;
-    }
+    }*/
 
 
 }

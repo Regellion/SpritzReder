@@ -26,6 +26,7 @@ public class ShowPanel extends FormPanel{
     private static final String TAB_HTML = "&nbsp;&nbsp;&nbsp;&nbsp;";
     private ArrayList<String> array;
     private long speed;
+    private Printer printer;
     ShowPanel(){
         infoText.setText(START_STRING_HTML + "Осталось одно действие и мы начнем!" + FINISH_STRING_HTML);
         mainText.setText("<html><div WIDTH=%d><left>" + TAB_HTML + "Пожалуйста, введите в поле ниже желаемую скорость" +
@@ -43,12 +44,19 @@ public class ShowPanel extends FormPanel{
                 speed = Long.parseLong(speedText.getText());
                 speedText.setText("");
                 // TODO потоки перекрываются, надо сделать синхронизед блок или что нить подобное
-                Printer printer = new Printer(getArray(), showElement, speed);
+                printer = new Printer(getArray(), showElement, speed);
+                // Делаем поток демоном
+                printer.setDaemon(true);
                 printer.start();
             }else {
                 //TODO сделать окно
                 System.out.println("its bigger");
             }
+        });
+
+        // Если нажата кнопка возврата в главное меню, останавливаем поток
+        startMenuButton.addActionListener(e -> {
+            printer.stopRunning();
         });
     }
 
@@ -60,11 +68,12 @@ public class ShowPanel extends FormPanel{
         return startMenuButton;
     }
 
-    public ArrayList<String> getArray() {
+    private ArrayList<String> getArray() {
         return array;
     }
 
     void setArray(ArrayList<String> array) {
         this.array = array;
     }
+
 }

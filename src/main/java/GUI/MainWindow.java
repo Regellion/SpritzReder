@@ -70,6 +70,7 @@ public class MainWindow extends JFrame {
         } else if(e.getSource().equals(showPanel.getStartMenuButton())){
             windowSwitcher(welcomePanel);
         }
+        //TODO
         // мб можно удалить
         this.repaint();
     }

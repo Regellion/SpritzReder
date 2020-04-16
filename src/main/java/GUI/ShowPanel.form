@@ -90,10 +90,10 @@
                   <component id="3aae4" class="javax.swing.JLabel" binding="showElement">
                     <constraints/>
                     <properties>
-                      <font name="DialogInput" size="48" style="0"/>
+                      <font name="DialogInput" size="45" style="0"/>
                       <horizontalAlignment value="2"/>
                       <horizontalTextPosition value="2"/>
-                      <preferredSize width="500" height="60"/>
+                      <preferredSize width="400" height="70"/>
                       <text value="show Element"/>
                       <toolTipText value="Поле с Вашим текстом"/>
                     </properties>
