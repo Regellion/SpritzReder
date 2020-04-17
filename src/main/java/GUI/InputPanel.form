@@ -45,7 +45,7 @@
             <constraints border-constraint="Center"/>
             <properties/>
             <border type="empty">
-              <size top="10" left="0" bottom="0" right="0"/>
+              <size top="20" left="0" bottom="0" right="0"/>
             </border>
             <children>
               <component id="442a8" class="javax.swing.JTextField" binding="urlText">
@@ -62,7 +62,7 @@
                 <constraints border-constraint="East"/>
                 <properties/>
                 <border type="empty">
-                  <size top="0" left="0" bottom="0" right="0"/>
+                  <size top="20" left="0" bottom="0" right="0"/>
                 </border>
                 <children>
                   <component id="87602" class="javax.swing.JButton" binding="fileSelectButton">
@@ -74,14 +74,6 @@
                       <horizontalTextPosition value="11"/>
                       <text value="Button"/>
                       <toolTipText value="Кнопка выобра файла"/>
-                    </properties>
-                  </component>
-                  <component id="f5906" class="javax.swing.JButton" binding="stringButton">
-                    <constraints border-constraint="South"/>
-                    <properties>
-                      <text value="Button"/>
-                      <toolTipText value="Кнопка ввода текста из поля"/>
-                      <visible value="true"/>
                     </properties>
                   </component>
                 </children>
@@ -106,12 +98,13 @@
                       <inheritsPopupMenu value="false"/>
                     </properties>
                     <border type="empty">
-                      <size top="0" left="0" bottom="0" right="5"/>
+                      <size top="20" left="0" bottom="0" right="5"/>
                     </border>
                     <children>
                       <component id="54ff7" class="javax.swing.JTextArea" binding="stringText">
                         <constraints/>
                         <properties>
+                          <font name="Times New Roman" size="18" style="0"/>
                           <maximumSize width="32767" height="32767"/>
                           <text value=""/>
                           <toolTipText value="Поле для ввода Вашего текста"/>
