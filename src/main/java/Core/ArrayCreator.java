@@ -1,5 +1,6 @@
 package Core;
 
+import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.tika.Tika;
@@ -18,7 +19,6 @@ public class ArrayCreator {
 
     // Средняя длина русского слова(7) + 7(на всякий случай), оптимальная длинна слова до 14 символов(чтобы быстро читать)
     private static final int MAX_WORD_LENGTH = 13;
-    private ArrayList<String> arrayList;
     // Регулярки для клин кода
     private static final String SPACE_REGEX = "\\s";
     private static final String HYPHEN_WORD_REGEX = ".+-.+";
@@ -36,12 +36,6 @@ public class ArrayCreator {
     private static final String HTML_FILE = "text/html";
 
 
-    public ArrayCreator(String textOrFile) throws IOException, TikaException {
-
-            //arrayList = createRSVP(ArrayCreator.autoParser(textOrFile));
-
-    }
-
     // Метод создания листа строк по методу Spritz
     public static ArrayList<String> createSpritz(ArrayList<String> array){
         if(array == null){
@@ -54,18 +48,19 @@ public class ArrayCreator {
             // Определяем сколько пробелов нужно в зависимости от длинны слова
             int length = splitArray.get(i).length();
             // Если слово длинной в 1 символ то + 3 пробела
+            // TODO уменьшил вывод на 1 символ пробела
             if(length == 1){
-                spaces.append(" ".repeat(3));
+                spaces.append(" ".repeat(2));
                 splitArray.set(i, spaces + splitArray.get(i));
                 // Если слово длинной от 2 до 6 символов то + 2 пробела
             } else if(length == 2 || length == 3 || length == 4 || length == 5 ){
-                spaces.append(" ".repeat(2));
+                spaces.append(" ".repeat(1));
                 splitArray.set(i, spaces + splitArray.get(i));
                 // Если от 7 до 9 то + пробел
             } else if(length == 6 || length == 7 || length == 8 || length == 9){
                 spaces.append(" ".repeat(1));
                 splitArray.set(i, spaces + splitArray.get(i));
-            }   // В остальных случаях ничего не добавляем
+            }  // В остальных случаях ничего не добавляем
         }
         return splitArray;
     }
@@ -133,19 +128,27 @@ public class ArrayCreator {
         ArrayList<String> arr = null;
 
         Tika tika = new Tika();
+        // Определяем тип файла Тики
         String media = tika.detect(filePath);
+        // Если текст не является ссылкой
         if(!filePath.startsWith(HTTP_FORMAT_REGEX)) {
+            // Если путь не указывает на docx документ то парсим как все файлы
             if (media.equals(PDF) || media.equals(RTF)
-                    || media.equals(TXT) || media.equals(DOC)
-                    || media.equals(ODT) || media.equals(FB2)
-                    || media.equals(EPUB) || media.equals(HTML_FILE)
+                    || media.equals(TXT) || media.equals(ODT)
+                    || media.equals(FB2) || media.equals(EPUB)
+                    || media.equals(HTML_FILE)
                 /*TODO моби распарсить*/) {
                 arr = parserAllFiles(filePath);
+                // Если путь указывает на docx документ, то парсим отдельным методом
             } else if (media.equals(DOCX)) {
                 arr = parserFileDOCX(filePath);
-            } else {
+            } else if (media.equals(DOC)){
+                arr = parserFileDOC(filePath);
+            }
+            else {
                 System.out.println("Такой формат временно не поддерживается!");
             }
+            // Если текст является ссылкой то парсим как ссылку
         } else {
             arr = parserURL(filePath);
         }
@@ -175,6 +178,19 @@ public class ArrayCreator {
             }
         } catch (IOException e) {
             System.out.println("Ссылка не ведет к сайту или документу!");
+        }
+        return getArrayList(builder);
+    }
+
+    // Метод обработки .doc файла
+    private static ArrayList<String> parserFileDOC(String filePath) throws IOException {
+        File file = new File(filePath);
+        StringBuilder builder = new StringBuilder();
+        if(file.isFile()){
+            WordExtractor wordExtractor = new WordExtractor(new FileInputStream(filePath));
+            builder.append(wordExtractor.getText());
+        }else {
+            System.out.println("Путь " + file.getAbsolutePath() + " не ведет к файлу!");
         }
         return getArrayList(builder);
     }
@@ -251,7 +267,6 @@ public class ArrayCreator {
     }
 
 
-    // TODO доделать метод чтобы принимал строку с отступами
     // Метод обработки строки
     public static ArrayList<String> parserString(String text){
         ArrayList<String> arr = getArrayList(new StringBuilder(text));
