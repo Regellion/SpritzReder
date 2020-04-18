@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="GUI.ShowPanel">
+  <grid id="27dc6" binding="mainShowPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+    <constraints>
+      <xy x="20" y="20" width="524" height="400"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <grid id="a2869" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="North"/>
+        <properties/>
+        <border type="empty">
+          <size top="20" left="0" bottom="0" right="0"/>
+        </border>
+        <children>
+          <component id="1a58b" class="javax.swing.JLabel" binding="infoText">
+            <constraints border-constraint="Center"/>
+            <properties>
+              <font name="Times New Roman" size="22" style="1"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <text value="Info Text"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="25aec" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+        <constraints border-constraint="South"/>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="abd" class="javax.swing.JButton" binding="startMenuButton">
+            <constraints/>
+            <properties>
+              <text value="В начало"/>
+              <toolTipText value="Возврат в главное меню"/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+      <grid id="254fa" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints border-constraint="Center"/>
+        <properties/>
+        <border type="empty">
+          <size top="20" left="0" bottom="0" right="0"/>
+        </border>
+        <children>
+          <component id="8fe48" class="javax.swing.JLabel" binding="mainText">
+            <constraints border-constraint="North"/>
+            <properties>
+              <font name="Times New Roman" size="18" style="0"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <text value="main text"/>
+              <verticalAlignment value="0"/>
+            </properties>
+            <clientProperties>
+              <html.disable class="java.lang.Boolean" value="false"/>
+            </clientProperties>
+          </component>
+          <grid id="79a5f" layout-manager="BorderLayout" hgap="0" vgap="0">
+            <constraints border-constraint="Center"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="612fd" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints border-constraint="North"/>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="3e432" class="javax.swing.JTextField" binding="speedText">
+                    <constraints/>
+                    <properties>
+                      <horizontalAlignment value="0"/>
+                      <inheritsPopupMenu value="false"/>
+                      <preferredSize width="100" height="30"/>
+                      <toolTipText value="Поле для ввода скорости чтения"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="6f157" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+                <constraints border-constraint="Center"/>
+                <properties/>
+                <border type="empty">
+                  <size top="40" left="85" bottom="0" right="0"/>
+                </border>
+                <children>
+                  <component id="3aae4" class="javax.swing.JLabel" binding="showElement">
+                    <constraints/>
+                    <properties>
+                      <font name="DialogInput" size="45" style="1"/>
+                      <horizontalAlignment value="2"/>
+                      <horizontalTextPosition value="2"/>
+                      <preferredSize width="400" height="70"/>
+                      <text value="show Element"/>
+                      <toolTipText value="Поле с Вашим текстом"/>
+                    </properties>
+                  </component>
+                  <component id="5c7ea" class="javax.swing.JButton" binding="stopButton">
+                    <constraints/>
+                    <properties>
+                      <margin top="0" left="0" bottom="0" right="0"/>
+                      <preferredSize width="85" height="40"/>
+                      <text value="stop/start"/>
+                      <toolTipText value="Кнопка остановки и запуска чтения"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>
