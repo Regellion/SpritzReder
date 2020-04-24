@@ -11,7 +11,7 @@
       <size top="20" left="20" bottom="0" right="20"/>
     </border>
     <children>
-      <grid id="efc1e" binding="welcomeTextPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+      <grid id="efc1e" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="North"/>
         <properties/>
         <border type="empty">
@@ -29,7 +29,7 @@
           </component>
         </children>
       </grid>
-      <grid id="d6d3" binding="mainTextPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
+      <grid id="d6d3" layout-manager="BorderLayout" hgap="0" vgap="0">
         <constraints border-constraint="Center"/>
         <properties/>
         <border type="none"/>
@@ -68,7 +68,7 @@
               <verticalTextPosition value="1"/>
             </properties>
           </component>
-          <grid id="318b6" binding="buttonPanel" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
+          <grid id="318b6" layout-manager="FlowLayout" hgap="5" vgap="5" flow-align="1">
             <constraints border-constraint="South"/>
             <properties/>
             <border type="none"/>
