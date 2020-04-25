@@ -76,6 +76,7 @@
               <component id="76b05" class="javax.swing.JButton" binding="nextButton">
                 <constraints/>
                 <properties>
+                  <font name="Times New Roman" size="18" style="1"/>
                   <preferredSize width="200" height="35"/>
                   <text value="Далее"/>
                   <toolTipText value="Нажмите эту кнопку чтобы продолжить"/>

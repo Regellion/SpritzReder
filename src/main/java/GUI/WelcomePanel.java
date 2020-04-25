@@ -26,9 +26,9 @@ public class WelcomePanel extends FormPanel{
 
     private void setImages(){
         // Картинка, отвечающая за метод спритз
-        spritzImg.setIcon(new ImageIcon("src\\main\\resources\\images\\spritzExample.jpg"));
+        spritzImg.setIcon(new ImageIcon("images/spritzExample.jpg"));
         // Картинка, отвечающая за метод RSVP
-        RSVPImg.setIcon(new ImageIcon("src\\main\\resources\\images\\RSVPExample.jpg"));
+        RSVPImg.setIcon(new ImageIcon("images/RSVPExample.jpg"));
     }
 
     private void setMainText(){
