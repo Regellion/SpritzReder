@@ -1,5 +1,9 @@
 package Core;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.apache.poi.hwpf.extractor.WordExtractor;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -16,7 +20,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
+//TODO логгировать и успех!
 public class ArrayCreator {
+    private static Logger logger = LogManager.getLogger(ArrayCreator.class);
+    private static final Marker ERROR_INPUT_FORMAT = MarkerManager.getMarker("INPUTS");
+    private static final Marker ERROR_EMPTY_FILE = MarkerManager.getMarker("INPUTS");
+    private static final Marker ERROR_CONNECTIONS_URL = MarkerManager.getMarker("INPUTS");
 
     // Средняя длина русского слова(7) + 7(на всякий случай), оптимальная длинна слова до 14 символов(чтобы быстро читать)
     private static final int MAX_WORD_LENGTH = 13;
@@ -72,14 +81,7 @@ public class ArrayCreator {
 
         ArrayList<String> splitArray = spliterator(array);
         // получаем новый размер строк
-        int maxWordLength = 0;
-        if(splitArray.size() != 0) {
-            maxWordLength = splitArray.stream().max(Comparator.comparing(String::length)).get().length();
-        } else {
-            //TODO логгировать как ошибку
-            // Мб удалить все иф эльс
-            System.out.println("Что то пошло не так с длинной нового arrayList'а! Смотри в ArrayCreator, метод createRSVP");
-        }
+        int maxWordLength = splitArray.stream().max(Comparator.comparing(String::length)).get().length();
 
         StringBuilder spaces = new StringBuilder();
         spaces.append(" ".repeat(maxWordLength / 2));
@@ -150,7 +152,6 @@ public class ArrayCreator {
                 arr = parserFileDOC(filePath);
             }
             else {
-                // TODO логгируем
                 // Ошибка пути или формата файла
                 errorFormatFileOrFilePath(filePath);
             }
@@ -175,14 +176,16 @@ public class ArrayCreator {
                 if(builder.length() == 0){
                     // Ошибка извлечения текста из файла
                     errorInputURLMessage(url);
-                    // TODO логгируем и пишем про неудачу экстракта
+                    // Логгируем ошибку получения текста с сайта
+                    logger.warn(ERROR_CONNECTIONS_URL,"Connecting to URL: " + url + " was completed, but the site is empty." );
                     builder = null;
                 }
             }
         } catch (Exception e) {
             // Ошибка подключения к сайту
             errorInputURLMessage(url);
-            //TODO логгируем и пишем про неудачу коннекта
+            // Логгируем ошибку подключения к сайту
+            logger.warn(ERROR_CONNECTIONS_URL,"Connection to URL: " + url + " failed.");
             builder = null;
         }
         return getArrayList(builder);
@@ -196,7 +199,6 @@ public class ArrayCreator {
             WordExtractor wordExtractor = new WordExtractor(new FileInputStream(filePath));
             builder.append(wordExtractor.getText());
         }else {
-            // TODO логгировать
             // Ошибка формата или пути файла
             errorFormatFileOrFilePath(file.getAbsolutePath());
             builder = null;
@@ -215,7 +217,6 @@ public class ArrayCreator {
             builder.append(extractor.getText());
         }
         else {
-            // TODO логгировать
             // Ошибка формата файла
             errorFormatFileOrFilePath(file.getAbsolutePath());
             builder = null;
@@ -237,7 +238,6 @@ public class ArrayCreator {
     private static StringBuilder getStringBuilder(File file, StringBuilder builder) throws IOException, TikaException {
         if(file.isFile()){
             if(file.length()==0){
-                // TODO логгировать
                 // Ошибка пустого файла
                 errorFileIsEmptyMessage(file);
                 return null;
@@ -249,10 +249,10 @@ public class ArrayCreator {
         }
         else {
             //TODO мб удалить все иф эльсы проверок на файл
-            // Логгировать
+            logger.warn(ERROR_INPUT_FORMAT,"Path: " + file.getAbsolutePath() + " is not a file.");
+            //TODO мб сделать окно!!!!!
             System.out.println("Путь: " + file.getAbsolutePath() + " не ведет к файлу!");
             return null;
-
         }
         return builder;
     }
@@ -288,7 +288,6 @@ public class ArrayCreator {
     public static ArrayList<String> parserString(String text){
         ArrayList<String> arr = getArrayList(new StringBuilder(text));
         if(text.length() == 0){
-            // TODO логгировать
             // Окно ошибки пустого текста от пользователя
             errorInputTextIsEmpty();
             arr = null;
@@ -301,7 +300,8 @@ public class ArrayCreator {
         String message = "К сожалению, программа не нашла текст по адрессу: \n" + url + "\n" +
                 "Проверьте адрес сайта или Ваше подключение к интернету";
         JOptionPane.showConfirmDialog(Loader.getMainWindow(), message, "Parsing error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-    }
+        Loader.getMainWindow().getInputPanel().setStringText("Что то пошло не так, попробуйте ввести информацию заного.");
+        }
 
     // Окно ошибки формата
     private static void errorFormatFileOrFilePath(String path){
@@ -310,17 +310,26 @@ public class ArrayCreator {
                 "Проверьте адрес или формат выбраного файла!\n" +
                 "Формат выбранного файла: " + format;
         JOptionPane.showConfirmDialog(Loader.getMainWindow(), message, "File input error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+        Loader.getMainWindow().getInputPanel().setStringText("Что то пошло не так, попробуйте загрузить файл заного.");
+        // Логгируем ошибку формата
+        logger.warn(ERROR_INPUT_FORMAT, "File path: " + path + " .Invalid format: " + format);
     }
 
     // Окно ошибки "файл пуст"
     private static void errorFileIsEmptyMessage(File file){
         String message = "Файл: \n" + file.getAbsolutePath() + " пуст!";
         JOptionPane.showConfirmDialog(Loader.getMainWindow(), message, "File is empty", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+        Loader.getMainWindow().getInputPanel().setStringText("Что то пошло не так, попробуйте загрузить файл заного.");
+        // Логгируем ошибку пустого файла
+        logger.warn(ERROR_EMPTY_FILE, "File: " + file.getAbsolutePath() + " is empty.");
     }
 
     // Окно ошибки "введенный текст пуст"
     private static void errorInputTextIsEmpty(){
         String message = "Введенный текст не сожержит слов!";
         JOptionPane.showConfirmDialog(Loader.getMainWindow(), message, "String is empty", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+        Loader.getMainWindow().getInputPanel().setStringText("Что то пошло не так, попробуйте загрузить файл заного.");
+        // Логгируем ошибку пустого пользовательского текста
+        logger.warn(ERROR_EMPTY_FILE,"Input text is empty.");
     }
 }

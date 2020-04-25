@@ -1,12 +1,15 @@
 package Core;
 
+import org.apache.logging.log4j.*;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-
+// TODO сделать логгер остановки потоки и логгер сохранения
 // Поток для обновления JLabel'а
 public class Printer extends Thread {
+    private static Logger logger = LogManager.getLogger(Printer.class);
+
     private static final double minuteSize = 60000.0;
     private AtomicInteger integer = new AtomicInteger(0);
     private ArrayList<String> array;
@@ -31,7 +34,7 @@ public class Printer extends Thread {
     public void run() {
         array.forEach(element -> {
             if (isActiving()) {
-                Loader.getMainWindow().getShowPanel().getStartMenuButton().addActionListener(e -> {
+                Loader.getMainWindow().getShowPanel().getReturnButton().addActionListener(e -> {
                     // Если нажали возврат в главное меню, то прерываем вывод
                     isActive = false;
                     textArray.setText(null);
@@ -52,8 +55,8 @@ public class Printer extends Thread {
                         Thread.sleep((long) (speed * smallWordsCoefficient));
                     }
                 } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                    // TODO логгировать
+                    // Логгирую ошибку потока
+                    logger.error(ex);
                 }
             }
         });

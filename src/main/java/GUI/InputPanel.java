@@ -2,6 +2,10 @@ package GUI;
 
 import Core.ArrayCreator;
 import Core.Loader;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.apache.tika.exception.TikaException;
 import javax.swing.*;
 import java.awt.event.FocusEvent;
@@ -32,6 +36,12 @@ public class InputPanel extends FormPanel{
     private JButton RSVPButton;
     private JButton spritzButton;
 
+    private static Logger logger = LogManager.getLogger(InputPanel.class);
+    private static final Marker INPUT_URL = MarkerManager.getMarker("INPUTS");
+    private static final Marker INPUT_FILE = MarkerManager.getMarker("INPUTS");
+    private static final Marker INPUT_TEXT = MarkerManager.getMarker("INPUTS");
+    private static final Marker SELECT_RSVP = MarkerManager.getMarker("INPUTS");
+    private static final Marker SELECT_SPRITZ = MarkerManager.getMarker("INPUTS");
     // Использую HTML тэги для автопереноса строки
     private static final String TAB_HTML = "&nbsp;&nbsp;&nbsp;&nbsp;";
     private static final String START_INFO_TEXT_HTML = "<html><div WIDTH=%d><center>";
@@ -55,24 +65,23 @@ public class InputPanel extends FormPanel{
         // Если в однострочное поле ввели текст и нажали enter
         urlText.addActionListener(e -> {
             urlOrFile = urlText.getText().trim();
-            //TODO в конце удалить sout
-            //TODO логгер ввода
-            System.out.println(urlOrFile);
+            String message = urlText.getText();
+            // Логгер ввода URL
+            logger.info(INPUT_URL, "Input: " + message);
             // TODO сделать 1 метод на 3 кнопки
             try {
-                array = ArrayCreator.autoParser(urlOrFile);
-                //TODO логгер успеха
-                //TODO мб сделать диалоговое окно с выбором методов
                 urlText.setText("Для продолжения нажмите кнопку RSVP или Spritz");
+                array = ArrayCreator.autoParser(urlOrFile);
+                logger.info(INPUT_URL, "Input completed.");
                 stringText.setText(null);
             } catch (IOException | TikaException ex) {
                 ex.printStackTrace();
-                //TODO диалоговое окно, говорящее ввести заного
-                //TODO логгер неудачи
+                // Логгер неудачного ввода URL
+                logger.warn(INPUT_URL, "Input is failed.");
                 urlText.setText("Что то пошло не так, попробуйте ввести адресс заного");
             }
         });
-        // Удаляеи информационный текст из поля по клику мышки на поле
+        // Удаляем информационный текст из поля по клику мышки на поле
         urlText.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -99,23 +108,25 @@ public class InputPanel extends FormPanel{
             JFileChooser fileOpen = new JFileChooser();
             int ret = fileOpen.showDialog(null, "Выбрать файл");
             if (ret == JFileChooser.APPROVE_OPTION) {
-                //TODO логгер ввода
                 File file = fileOpen.getSelectedFile();
                 urlOrFile = file.getAbsolutePath().trim();
-                //TODO в конце удалить sout
-                System.out.println(urlOrFile);
+                // Логгер выбора файла
+                logger.info(INPUT_FILE, "Input file: " + file.getAbsolutePath());
                 try {
-                    //TODO логгер успеха
-                    array = ArrayCreator.autoParser(urlOrFile);
-                    urlText.setText(null);
                     stringText.setText("Вы успешно загрузили файл. Для продолжения нажмите кнопку RSVP или Spritz.");
+                    array = ArrayCreator.autoParser(urlOrFile);
+                    if(array == null){
+                        // Логгер неудачного выбора файла
+                        logger.warn(INPUT_FILE, "Input file is failed.");
+                    } else {
+                        // Логгер успешного выбора файла
+                        logger.info(INPUT_FILE, "Input file completed.");
+                    }
+                    urlText.setText(null);
                 } catch (IOException | TikaException ex) {
-                    ex.printStackTrace();
-                    //TODO логгер ошибки
-                    //TODO диалоговое окно ошибки
-                    stringText.setText("Что то пошло не так, попробуйте загрузить файл заного");
+                    // Логгер неудачного выбора файла
+                    logger.warn(INPUT_FILE, "Input file is failed.");
                 }
-                //TODO написать об успехе или неудачи выбора файла
             }
         });
 
@@ -143,18 +154,19 @@ public class InputPanel extends FormPanel{
             public void keyPressed(KeyEvent e) {
                 if(e.getKeyCode() == KeyEvent.VK_ENTER && !e.isShiftDown()){
                     str = stringText.getText().trim();
-                    //TODO логгер ввода
-                    //TODO в конце удалить sout
-                    System.out.println(str);
+                    // Логгер введения текста
+                    logger.info(INPUT_TEXT, "Input text.");
                     // Вызываем метод парсинга строки
-                    //TODO сделать проверку на успех\неудачу ввода
-                    //TODO логгер успеха
-                    //TODO логгер неудачи
-                    //TODO диалоговое окно неудачи
-                    array = ArrayCreator.parserString(str);
                     stringText.setText("Для продолжения нажмите кнопку RSVP или Spritz.");
+                    array = ArrayCreator.parserString(str);
+                    if (array == null){
+                        // Логгер неверного ввода текста
+                        logger.warn(INPUT_TEXT, "Input text is failed.");
+                    }else {
+                        // Логгер успешного ввода текста
+                        logger.info(INPUT_TEXT, "Input text completed.");
+                    }
                     urlText.setText(null);
-                    //TODO написать об успехе или неудачи выбора файла
                 }
             }
         });
@@ -166,7 +178,8 @@ public class InputPanel extends FormPanel{
                 //TODO вынести все сообщения в константы
                 if (stringText.getText().equals("Это поле для ввода многострочного текста.")
                         || stringText.getText().equals("Для продолжения нажмите кнопку RSVP или Spritz.\n")
-                        || stringText.getText().equals("Вы успешно загрузили файл. Для продолжения нажмите кнопку RSVP или Spritz.")) {
+                        || stringText.getText().equals("Вы успешно загрузили файл. Для продолжения нажмите кнопку RSVP или Spritz.")
+                        || stringText.getText().startsWith("Что то пошло не так, попробуйте загрузить файл заного.")) {
                     stringText.setText(null);
                 }
             }
@@ -179,25 +192,34 @@ public class InputPanel extends FormPanel{
             }
         });
 
+
         RSVPButton.addActionListener(e -> {
+            // Логгер выбора метода парсинга
+            logger.info(SELECT_RSVP, "Select RSVP method.");
             if(array != null) {
                 array = ArrayCreator.createRSVP(array);
                 // здесь передавать списки дальше
                 Loader.getMainWindow().getShowPanel().setArray(array);
-                //TODO логгер метода парсинга
+                // Логгер успеха парсинга
+                logger.info(SELECT_RSVP, "Parsing completed.");
             } else {
-                //TODO логги
+                // Логгер неудачи парсинга
+                logger.warn(SELECT_RSVP, "Parsing is failed.");
             }
         });
 
         spritzButton.addActionListener(e -> {
+            // Логгер выбора метода парсинга
+            logger.info(SELECT_SPRITZ, "Select spritz method.");
             if(array != null) {
                 array = ArrayCreator.createSpritz(array);
                 // здесь передавать списки дальше
                 Loader.getMainWindow().getShowPanel().setArray(array);
-                //TODO логгер метода парсинга
+                // Логгер удачного парсинга
+                logger.info(SELECT_SPRITZ, "Parsing completed.");
             } else {
-                //TODO логги
+                // Логгер неудачного парсинга
+                logger.warn(SELECT_SPRITZ, "Parsing is failed.");
             }
         });
     }
@@ -219,10 +241,15 @@ public class InputPanel extends FormPanel{
     }
 
 
+    public void setStringText(String stringText) {
+        this.stringText.setText(stringText);
+    }
+
     // Устанавливаем инфо текст
     private void setInfoText(){
         infoText.setText(START_INFO_TEXT_HTML + "Осталось всего несколько шагов!" + FINISH_INFO_TEXT_HTML);
     }
+
     // Устанавливаем текст ввода
     private void setInputText(){
         inputText.setText(START_INPUT_TEXT_HTML + TAB_HTML + "Если вы хотите прочитать текст из файла или сайта, " +
@@ -230,6 +257,7 @@ public class InputPanel extends FormPanel{
                 ", после того как вы введете информацию, нажмите кнопку Spritz или RSVP, для чтения " +
                 "соответствующим образом:" + FINISH_INPUT_TEXT_HTML);
     }
+
     // Устанавливаем текст многострочной панели
     private void setInfoTextStringPanel(){
         infoTextStringPanel.setText(START_INFO_TEXT_STRING_HTML + TAB_HTML + "Если вы желаете ввести свой текст, или часть " +

@@ -1,6 +1,10 @@
 package GUI;
 
 import Core.Printer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -12,12 +16,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ShowPanel extends FormPanel{
 
     private JPanel mainShowPanel;
-    private JButton startMenuButton;
+    private JButton returnButton;
     private JLabel infoText;
     private JLabel mainText;
     private JTextField speedText;
     private JLabel showElement;
     private JButton stopButton;
+    private JButton saveButton;
+
+    private static Logger logger = LogManager.getLogger(ShowPanel.class);
+    private static final Marker ERROR_INPUT_SPEED = MarkerManager.getMarker("INPUTS");
+    private static final Marker CORRECT_INPUT_SPEED = MarkerManager.getMarker("INPUTS");
 
     // Использую HTML тэги для автопереноса строки
     private static final String START_STRING_HTML = "<html><div WIDTH=%d><center>";
@@ -33,11 +42,14 @@ public class ShowPanel extends FormPanel{
         // то надо изменить так же сдвиг окна вывода в лево!!!!!!
         // TODO обьеденить все по методам и сгруппировать
         // TODO сделать методы кастомизации всего интерфейса
+        // TODO сделать кнопку сохранить
         infoText.setText(START_STRING_HTML + "Осталось одно действие и мы начнем!" + FINISH_STRING_HTML);
         setMainText();
         // Настройка выводящего элемента
         showElementSettings();
 
+        // Делаем кнопку стоп не доступной в начале
+        stopButton.setEnabled(false);
         // Если нажата кнопка стоп то останавливаем вывод, а затем продолжаем
         stopButton.addActionListener(e -> {
             // Считаем, стоп это или старт
@@ -45,11 +57,14 @@ public class ShowPanel extends FormPanel{
         stopButtonIsPressed();
         });
 
+        saveButton.setVisible(false);
         // Если пользователь ввел скорость чтения, то выводим слова на экран
+        //TODO переделать текст для букв
+        // выводить нормы чтения
         speedText.addActionListener(e -> speedInsert());
 
         // Если нажата кнопка возврата в главное меню, останавливаем поток
-        startMenuButton.addActionListener(e -> startMenuButtonPressed());
+        returnButton.addActionListener(e -> startMenuButtonPressed());
     }
 
     // Метод настройки showElement
@@ -74,7 +89,11 @@ public class ShowPanel extends FormPanel{
 
             @Override
             protected void done(){
-                workerDone();
+                try {
+                    workerDone();
+                }catch (Exception ex){
+                    logger.error(ex);
+                }
             }
         };
         worker.execute();
@@ -96,6 +115,7 @@ public class ShowPanel extends FormPanel{
     private void workerDone(){
         // Если кнопка нажата 1, 3, 5... раз то останавливаем вывод
         if(iterator % 2 != 0) {
+            saveButton.setVisible(true);
             // Останавливаем поток вывода слов
             printer.stopPrinter();
             // Если последнее слово в листе то блокируем кнопку стоп
@@ -107,6 +127,7 @@ public class ShowPanel extends FormPanel{
             }
             // иначе запускаем вывод с прошлого места
         } else {
+            saveButton.setVisible(false);
             AtomicInteger newInteger = printer.getInteger();
             ArrayList<String> newArray = new ArrayList<>(array.subList(printer.getInteger().get(), array.size()));
 
@@ -116,9 +137,10 @@ public class ShowPanel extends FormPanel{
         }
     }
 
-
     // Метод действий после введения скорости
     private void speedInsert(){
+        // Делаем кнопку стоп доступной при вводе скорости
+        stopButton.setEnabled(true);
         // Делаем проверку на длинну слова и на то, чтобы это были цифры
         if ((speedText.getText().length() < 6
                 && speedText.getText().matches("\\d+"))
@@ -126,7 +148,8 @@ public class ShowPanel extends FormPanel{
                 || speedText.getText().equals("")) {
             // Устанавливаем скорость
             setSpeed();
-
+            // Лог корректного ввода скорости
+            logger.info(CORRECT_INPUT_SPEED, "Input speed: " + speed);
             // Создаем новый поток принтер
             printer = new Printer(getArray(), showElement, speed);
             // Делаем поток демоном
@@ -135,21 +158,20 @@ public class ShowPanel extends FormPanel{
             // После ввода, делаем поле ввода недоступным
             speedText.setEnabled(false);
         }else {
-            // TODO логги
             errorInputSpeedMessage();
         }
     }
-
 
     // Устанавливаем скорость либо по умолчанию либо введеную
     private void setSpeed(){
         if(speedText.getText().equals("0") || speedText.getText().equals("")){
             speed = 100;
+            // Отображаем дефолтный текст
+            speedText.setText("100");
         } else {
             speed = Integer.parseInt(speedText.getText());
         }
     }
-
 
     // Метод действий нажатой кнопки возврата в главное меню
     private void startMenuButtonPressed(){
@@ -159,36 +181,40 @@ public class ShowPanel extends FormPanel{
         speedText.setText(null);
         // обновляем итератор
         iterator = 0;
-        // Делаем доступной кнопку стоп\пуск
-        stopButton.setEnabled(true);
+        // Делаем недоступной кнопку стоп\пуск
+        stopButton.setEnabled(false);
     }
 
     // Метод настройки mainText
     private void setMainText(){
-        mainText.setText("<html><div WIDTH=%d><left>" + TAB_HTML + "Пожалуйста, введите в поле ниже желаемую скорость" +
+        //TODO HTML!!!!!!!!!!!!
+        mainText.setText("<html><div WIDTH=%d><left>" + TAB_HTML +
+                "Пожалуйста, введите в поле ниже желаемую скорость" +
                 " чтения слов в минуту(по умолчанию скорость чтения 100 слов в минуту)</left></div></html>");
     }
+
     // Метод вывода окна ошибки
     private void errorInputSpeedMessage(){
         String message = "Вы ввели слишком высокую скорость чтения.\n" +
                 "Скорость чтения не должна превышать 99999.";
-        JOptionPane.showConfirmDialog(showElement, message, "Input error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+        JOptionPane.showConfirmDialog(showElement, message, "Input error",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+        // Лог не корректной скорости
+        logger.warn(ERROR_INPUT_SPEED, "Ошибка ввода скорости. " + message +
+                " - введено: " + getSpeedText().getText());
     }
 
     public JPanel getPanel() {
         return mainShowPanel;
     }
 
-
-    public JButton getStartMenuButton() {
-        return startMenuButton;
+    public JButton getReturnButton() {
+        return returnButton;
     }
-
 
     private ArrayList<String> getArray() {
         return array;
     }
-
 
     void setArray(ArrayList<String> array) {
         this.array = array;
