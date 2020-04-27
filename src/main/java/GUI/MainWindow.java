@@ -1,13 +1,16 @@
 package GUI;
 
-
+import org.apache.logging.log4j.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-
 public class MainWindow extends JFrame {
+    private static Logger logger = LogManager.getLogger(MainWindow.class);
+    private static final Marker ERROR_INPUT =MarkerManager.getMarker("INPUTS");
+    private static final Marker SELECT_RETURN = MarkerManager.getMarker("INPUTS");
+    private static final Marker SELECT_FORWARD = MarkerManager.getMarker("INPUTS");
     // Создаем панели
     private ShowPanel showPanel = new ShowPanel();
     private WelcomePanel welcomePanel = new WelcomePanel();
@@ -25,13 +28,15 @@ public class MainWindow extends JFrame {
         JButton buttonReturn = inputPanel.getReturnButton();
         JButton buttonRSVP = inputPanel.getRSVPButton();
         JButton buttonSpritz = inputPanel.getSpritzButton();
-        JButton buttonStartMenu = showPanel.getStartMenuButton();
+        JButton buttonStartMenu = showPanel.getReturnButton();
 
 
         // Операция по закрытию
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         // Устанавливаем размер окна
         this.setMinimumSize(new Dimension(width, height));
+        // Фиксируем размер окна
+        this.setResizable(false);
         // TODO
         // Устанавливаем иконку окна
         //this.setIconImage(new ImageIcon());
@@ -57,11 +62,13 @@ public class MainWindow extends JFrame {
             // Если нажата кнопка продолжить
         if(e.getSource().equals(welcomePanel.getNextButton())){
             windowSwitcher(inputPanel);
+            // Логгер начала работы программы
+            logger.info(SELECT_FORWARD, "The user started entering data.");
             // Если во втором окне нажата кнопка возврата
         } else if(e.getSource().equals(inputPanel.getReturnButton())){
-            // Не используется метод windowSwitcher потому что неправильно кладет размеры на форму
-            //this.setContentPane(welcomePanel.getPanel());
             windowSwitcher(welcomePanel);
+            // Логгер отмены ввода
+            logger.info(SELECT_RETURN, "User input canceled.\n\n");
         } else if(e.getSource().equals(inputPanel.getRSVPButton())){
             if (inputPanel.getArray() == null){
                 // Окно сообщения об ошибки ввода
@@ -76,10 +83,12 @@ public class MainWindow extends JFrame {
             } else {
                 windowSwitcher(showPanel);
             }
-        } else if(e.getSource().equals(showPanel.getStartMenuButton())){
-            windowSwitcher(welcomePanel);
+        } else if(e.getSource().equals(showPanel.getReturnButton())){
+            windowSwitcher(inputPanel);
             // делаем поле ввода скорости видимым
             showPanel.getSpeedText().setEnabled(true);
+            // Логгер отмены ввода
+            logger.info(SELECT_RETURN, "User input canceled.\n");
         }
         //TODO
         // мб можно удалить
@@ -108,5 +117,11 @@ public class MainWindow extends JFrame {
         String message = "Вы оставили все поля пустыми,\n" +
                 "либо Ваш текст не содержит слов!";
         JOptionPane.showConfirmDialog(this, message, "Input error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+        // Логгирую пустой текст
+        logger.info(ERROR_INPUT, message);
+    }
+
+    public InputPanel getInputPanel() {
+        return inputPanel;
     }
 }

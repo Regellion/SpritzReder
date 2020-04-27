@@ -26,14 +26,17 @@ public class WelcomePanel extends FormPanel{
 
     private void setImages(){
         // Картинка, отвечающая за метод спритз
-        spritzImg.setIcon(new ImageIcon("src\\main\\resources\\images\\spritzExample.jpg"));
+        // TODO возможно сделать через спец средство для авто слэшей
+        spritzImg.setIcon(new ImageIcon("images/spritzExample.jpg"));
         // Картинка, отвечающая за метод RSVP
-        RSVPImg.setIcon(new ImageIcon("src\\main\\resources\\images\\RSVPExample.jpg"));
+        RSVPImg.setIcon(new ImageIcon("images/RSVPExample.jpg"));
     }
 
     private void setMainText(){
-        mainText.setText(START_STRING_HTML + TAB_HTML + "Данная программа предназначена для тренеровки скорочтения." +
-                " Программа поддерживает следующие форматы: doc, docx, epub, fb2, html, odt, pdf, rtf, txt.<br>" +
+        mainText.setText(START_STRING_HTML + TAB_HTML + "Данная программа предназначена для тренеровки скорочтения. " +
+                //TODO см текст
+                "Надо описать преимущества и результаты программы. <br>БОЛЕЕ ПОДРОБНО НАПИСАТЬ ПРО КАЖДЫЙ МЕТОД." +
+                " КНОПКАМ ВСЕМ СДЕЛАТЬ ТОЖЕ ПОДРОБНОЕ ОПИСАНИЕ<br>" +
                 TAB_HTML + "Данная программа может работать по двум основным принципам скорочтения:<br>" +
                 " 1) RSVP - метод выравнивания слов по центру.<br>" +
                 " 2) Spritz - метод выравнивания слов по Optimal Recognition Position(рекомендуемый)<br>" +
